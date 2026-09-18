@@ -1,0 +1,14 @@
+# HF-token
+.env
+
+# Python junk
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS junk
+.DS_Store
+
+#data
+data/

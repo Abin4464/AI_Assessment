@@ -17,12 +17,12 @@ Both an API and a UI are included: the assessment brief's Section 2 states both 
 **Prerequisites:**
 - Python 3.10, 3.11, or 3.12
 - [Ollama](https://ollama.com/download) installed and running (see below)
-- [git] (https://git-scm.com/) installed
 - Windows/Mac/Linux, 8GB+ RAM recommended (16GB+ for smooth performance)
 
 **1. Clone this repository and create a virtual environment:**
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Abin4464/AI_Assessment
+cd AI_Assessment
 python -m venv venv
 # or: conda create -p venv python==3.11 -y
 
@@ -140,6 +140,21 @@ result = df[(df['priority'] == 'Critical') & (df['resolution_time_hrs'].isnull()
 - Expand the safe-execution sandbox to support slightly more complex multi-step analyses
 - Add automated tests (currently manually verified — see Testing section below)
 - LLM-generated natural-language summaries of anomalies, not just raw tables
+
+## Troubleshooting
+
+**Ollama crashes with a CUDA / "stack-based buffer" error on startup:**
+This is a GPU driver compatibility issue between Ollama's bundled CUDA version and your NVIDIA driver, not an issue with this codebase. Fix:
+1. Update your NVIDIA driver from [nvidia.com/drivers](https://www.nvidia.com/drivers) and restart.
+2. If it still crashes, force CPU-only mode instead: quit Ollama from the system tray (or End Task in Task Manager), then in a fresh terminal run:
+   ```
+   set OLLAMA_LLM_LIBRARY=cpu
+   ollama serve
+   ```
+   Leave that terminal open, then run `python run.py` as usual in a separate terminal. Responses will be slower than GPU mode but fully functional.
+
+**First `/query` request times out or fails right after starting:**
+The model needs time to load into memory on its very first call after Ollama starts (up to ~60-90 seconds on CPU-only mode). Run `ollama run llama3.1:8b` once in a separate terminal and wait for a response before using the API/UI, or simply retry the query after a short wait.
 
 ## Testing
 
